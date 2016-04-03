@@ -1,4 +1,4 @@
-(ns klangmeister.sound.synthesis)
+(ns klang.synthesis)
 
 ; Definitions
 
