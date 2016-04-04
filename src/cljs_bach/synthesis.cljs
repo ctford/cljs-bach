@@ -1,4 +1,4 @@
-(ns klang.synthesis)
+(ns cljs-bach.synthesis)
 
 ; Definitions
 

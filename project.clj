@@ -1,4 +1,4 @@
-(defproject klang "0.1.0-SNAPSHOT"
+(defproject cljs-bach "0.1.0-SNAPSHOT"
   :description "A Clojurescript wrapper for the Web Audio API."
   :license {:name "MIT" }
   :dependencies [[org.clojure/clojure "1.7.0"]
@@ -8,7 +8,7 @@
 
   :plugins [[lein-cljsbuild "1.1.2"]]
 
-  :clean-targets ^{:protect false} ["resources/public/klang/js/compiled"
+  :clean-targets ^{:protect false} ["resources/public/cljs_bach/js/compiled"
                                     "target"
                                     "out"]
 
@@ -17,9 +17,9 @@
 
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
-                        :compiler {:main "klang.synthesis"
+                        :compiler {:main "cljs_bach.synthesis"
                                    :optimizations :none
                                    :pretty-print true
-                                   :output-to "resources/public/klang/js/compiled/app.js"
-                                   :output-dir "resources/public/klang/js/compiled"
+                                   :output-to "resources/public/cljs_bach/js/compiled/app.js"
+                                   :output-dir "resources/public/cljs_bach/js/compiled"
                                    :asset-path "js/compiled"}}]})
