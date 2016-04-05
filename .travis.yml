@@ -1,3 +1,2 @@
-sudo: true
 language: clojure
-script: lein cljsbuild dev once
+script: lein cljsbuild once dev
