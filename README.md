@@ -21,7 +21,8 @@ Once you have one, use `run-with` to give it an audio context, a time to run at 
         (percussive 0.01 0.4)
         (gain 0.1)))
 
-    (-> (ping freq) (run-with context (current-time context) 1.0))
+    ; Play the ping synthesiser now, at 440 hertz.
+    (-> (ping 440) (run-with context (current-time context) 1.0))
 
 Make sure you create an audio context once and store it somewhere. You should only need one, and if you keep creating
 them the browser will run out and error on you.
