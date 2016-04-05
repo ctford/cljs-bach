@@ -7,6 +7,11 @@
     (js/window.AudioContext.)
     (js/window.webkitAudioContext.)))
 
+(defn current-time
+  "Return the current time as recorded by the audio context."
+  [context]
+  (.-currentTime context))
+
 ; Definitions
 
 (defn subgraph
