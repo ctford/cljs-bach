@@ -9,7 +9,7 @@
   :plugins [[lein-cljsbuild "1.1.2"]
             [lein-figwheel "0.5.0-2"]]
 
-  :clean-targets ^{:protect false} ["resources/public/cljs_bach/js/compiled"
+  :clean-targets ^{:protect false} ["resources/public/js/compiled"
                                     "target"
                                     "out"]
 
