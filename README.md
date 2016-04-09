@@ -69,5 +69,11 @@ Design
 ------
 
 CLJS Bach is purely functional. To make synthesiser composition easier, synthesisers are actually functions that take
-an audio context, a time and a duration and return the actual synthesis notes. That's why you need `run-with` to make
-sound actually happen.
+an audio context, a time and a duration and return the synthesis graph.
+
+    (defn some-synth [...]
+      (fn [context at duration]
+        ; Create a graph of synthesis nodes.
+      ))
+
+That's why you need `run-with` to make sound actually happen.
