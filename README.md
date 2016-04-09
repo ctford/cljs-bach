@@ -23,14 +23,15 @@ one. Note the use of `connect->` to join together simple parts together.
         (percussive 0.01 0.4) ; Try varying the attack and decay.
         (gain 0.1)))          ; Try a bigger gain.
 
-Once you have a synth, connect it to `destination` and use `run-with` to give it an audio context, a time to run at and a duration.
+Once you have a synthesiser, connect it to `destination` and use `run-with` to give it an audio context, a time to run at
+and a duration.
 
     ; Play the ping synthesiser now, at 440 hertz.
     (-> (ping 440)
         (connect-> destination)
         (run-with context (current-time context) 1.0)))
 
-If you forget to connect a synth to `destination`, then you'll here no sound, because nothing will be sent to the speakers.
+If you forget to connect a synthesiser to `destination`, then you'll here no sound, because nothing will be sent to the speakers.
 
 Design
 ------
