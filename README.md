@@ -10,22 +10,27 @@ A Clojurescript wrapper for the Web Audio API, extracted from [Klangmeister](htt
 Usage
 -----
 
-See [Klangmeister](http://ctford.github.io/klangmeister/) for examples of how to build synthesisers.
-Once you have one, use `run-with` to give it an audio context, a time to run at and a duration.
+Firstly, create an audio context. You only need one, and if you keep creating them the browser will run out and error on you.
 
-    (def context (audio-context))
+    (defonce context (audio-context))
+
+See [Klangmeister](http://ctford.github.io/klangmeister/) for examples of how to build synthesisers. Here's a simple
+one. Note the use of `connect->` to join together simple parts together.
 
     (defn ping [freq]
       (connect->
-        (square freq) ; Try a sawtooth wave.
-        (percussive 0.01 0.4)
-        (gain 0.1)))
+        (square freq)         ; Try a sawtooth wave.
+        (percussive 0.01 0.4) ; Try varying the attack and decay.
+        (gain 0.1)))          ; Try a bigger gain.
+
+Once you have a synth, connect it to `destination` and use `run-with` to give it an audio context, a time to run at and a duration.
 
     ; Play the ping synthesiser now, at 440 hertz.
-    (-> (ping 440) (run-with context (current-time context) 1.0))
+    (-> (ping 440)
+        (connect-> destination)
+        (run-with context (current-time context) 1.0)))
 
-Make sure you create an audio context once and store it somewhere. You should only need one, and if you keep creating
-them the browser will run out and error on you.
+If you forget to connect a synth to `destination`, then you'll here no sound, because nothing will be sent to the speakers.
 
 Design
 ------
