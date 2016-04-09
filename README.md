@@ -33,6 +33,30 @@ and a duration.
 
 If you forget to connect a synthesiser to `destination`, then you'll here no sound, because nothing will be sent to the speakers.
 
+Getting a REPL
+--------------
+
+CLJS Bach relies on the Web Audio API, so it will only work if your javascript environment supports that. Fortunately, all
+major browsers except Internet Explorer do (and it will on next major release).
+
+If you have this project checked out locally, you can use the [Figwheel](https://github.com/bhauman/lein-figwheel) REPL. Firstly,
+start Figwheel.
+
+    lein figwheel
+
+Figwheel will tell you where's running, so you can open it in your browser.
+
+    Figwheel: Starting server at http://localhost:3449
+    ....
+    Prompt will show when Figwheel connects to your application
+
+Once you've done that, the REPL will come to life.
+
+    To quit, type: :cljs/quit
+    cljs.user=>
+
+From then on, you can type commands into the REPL, and they'll be executed by your browser.
+
 Design
 ------
 
