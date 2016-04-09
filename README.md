@@ -5,7 +5,15 @@ A Clojurescript wrapper for the Web Audio API, extracted from [Klangmeister](htt
 
 [![Build Status](https://travis-ci.org/ctford/cljs-bach.png)](https://travis-ci.org/ctford/cljs-bach)
 
+Importing it into your project
+------------------------------
+
+CLJS Bach is a Clojurescript library. To include it in your Clojurescript project, you need to
+include the following in your `project.clj` or `build.boot`.
+
 [![Clojars Project](http://clojars.org/cljs-bach/latest-version.svg)](http://clojars.org/cljs-bach)
+
+Once you've done that, you can use it like any other library.
 
 Usage
 -----
