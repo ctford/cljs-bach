@@ -6,7 +6,8 @@
 
   :min-lein-version "2.5.0"
 
-  :plugins [[lein-cljsbuild "1.1.2"]]
+  :plugins [[lein-cljsbuild "1.1.2"]
+            [lein-figwheel "0.5.0-2"]]
 
   :clean-targets ^{:protect false} ["resources/public/cljs_bach/js/compiled"
                                     "target"
@@ -17,9 +18,10 @@
 
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
+                        :figwheel true
                         :compiler {:main "cljs_bach.synthesis"
                                    :optimizations :none
                                    :pretty-print true
-                                   :output-to "resources/public/cljs_bach/js/compiled/app.js"
-                                   :output-dir "resources/public/cljs_bach/js/compiled"
+                                   :output-to "resources/public/js/compiled/app.js"
+                                   :output-dir "resources/public/js/compiled"
                                    :asset-path "js/compiled"}}]})
