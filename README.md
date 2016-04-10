@@ -41,6 +41,43 @@ and a duration.
 
 If you forget to connect a synthesiser to `destination`, then you'll here no sound, because nothing will be sent to the speakers.
 
+API
+---
+
+### Machinery
+
+* `(audio-context)` - returns the browser's Audio Context.
+* `(current-time context)` - returns the current time according to the supplied audio context.
+* `(run-with node context at duration)` - runs the synthesiser in the supplied context.
+* `destination` - a node representing the browser's speakers.
+
+### Oscillators
+
+* `(sawtooth 440)` - a sawtooth wave oscillating at 440 hertz.
+* `(sine 440)` - a sine wave oscillating at 440 hertz.
+* `(square 440)` - a square wave oscillating at 440 hertz.
+* `(triangle 440)` - a triangle wave oscillating at 440 hertz.
+* `white-noise` - a node emitting random noise.
+
+### Modifiers
+
+* `(adsr attack decay sustain release)` - an envelope for shaping a note.
+* `(gain level)` - a node that multiplies its input by `level`.
+* `(high-pass cutoff)` - filter out frequencies below `cutoff`.
+* `(low-pass cutoff)` - filter out frequencies above `cutoff`.
+* `(percussive attack decay)` - a simple envelope for shaping a note.
+
+### Effects
+
+* `(stereo-panner pan)` - pan the signal left (-1) or right (1).
+* `(delay-line time)` - delay the signal by `time`.
+* `reverb` - apply reverb to the signal.
+
+### Combinators
+
+* `(connect-> node1 node2)` - connect `node1`'s output to `node2`'s input.
+* `(add node1 node2)` - add together the outputs of `node1` and `node2`.
+
 Getting a REPL
 --------------
 
