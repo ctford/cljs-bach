@@ -53,10 +53,10 @@ API
 
 ### Oscillators
 
-* `(sawtooth 440)` - a sawtooth wave oscillating at 440 hertz.
-* `(sine 440)` - a sine wave oscillating at 440 hertz.
-* `(square 440)` - a square wave oscillating at 440 hertz.
-* `(triangle 440)` - a triangle wave oscillating at 440 hertz.
+* `(sawtooth frequency)` - a sawtooth wave oscillating at `frequency` hertz.
+* `(sine frequency)` - a sine wave oscillating at `frequency` hertz.
+* `(square frequency)` - a square wave oscillating at `frequency` hertz.
+* `(triangle frequency)` - a triangle wave oscillating at `frequency` hertz.
 * `white-noise` - a node emitting random noise.
 
 ### Modifiers
