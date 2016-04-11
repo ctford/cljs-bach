@@ -35,7 +35,9 @@
   [synth context at duration]
   (synth context at duration))
 
-(defn destination [context at duration]
+(defn destination
+  "The destination of the audio context i.e. the speakers."
+  [context at duration]
   (sink (.-destination context)))
 
 (defn plug [param input context at duration]
@@ -44,13 +46,17 @@
     (.setValueAtTime param input at)
     (-> input (run-with context at duration) :output (.connect param))))
 
-(defn gain [level]
+(defn gain
+  "Multiply the signal by level."
+  [level]
   (fn [context at duration]
     (subgraph
       (doto (.createGain context)
         (-> .-gain (plug level context at duration))))))
 
-(def pass-through (gain 1.0))
+(def pass-through
+  "Pass the signal through unaltered."
+  (gain 1.0))
 
 
 ; Envelopes
@@ -69,17 +75,23 @@
         corners)
       (subgraph audio-node))))
 
-(defn adshr [attack decay sustain hold release]
+(defn adshr
+  "An ADSR envelope that also lets you specify the hold duration."
+  [attack decay sustain hold release]
   (envelope [attack 1.0] [decay sustain] [hold sustain] [release 0]))
 
-(defn adsr [attack decay sustain release]
+(defn adsr
+  "A four-stage envelope."
+  [attack decay sustain release]
   (fn [context at duration]
     (let [remainder (- duration attack decay sustain)
           hold (max 0.0 remainder)
           node (adshr attack decay sustain hold release)]
       (-> node (run-with context at duration)))))
 
-(defn percussive [attack decay]
+(defn percussive
+  "A simple envelope."
+  [attack decay]
   (envelope [attack 1.0] [decay 0.0]))
 
 
@@ -144,6 +156,7 @@
         (.start at)))))
 
 (def white-noise
+  "Random noise."
   (let [white (fn [_] (-> (js/Math.random) (* 2.0) (- 1.0)))]
     (noise white)))
 
@@ -155,6 +168,7 @@
 ; Oscillators
 
 (defn oscillator
+  "A periodic wave."
   [type freq]
   (fn [context at duration]
     (source
@@ -174,6 +188,7 @@
 ; Filters
 
 (defn biquad-filter
+  "Attenuate frequencies beyond the cutoff, and intensify the cutoff frequency based on the value of q."
   ([type freq]
    (biquad-filter type freq 1.0))
   ([type freq q]
@@ -191,13 +206,16 @@
 
 ; Effects
 
-(defn stereo-panner [pan]
+(defn stereo-panner
+  "Pan the signal left (-1) or right (1)."
+  [pan]
   (fn [context at duration]
     (subgraph
       (doto (.createStereoPanner context)
         (-> .-pan (plug pan context at duration))))))
 
 (defn delay-line
+  "Delay the signal."
   [seconds]
   (fn [context at duration]
     (subgraph
@@ -206,6 +224,7 @@
           (-> .-delayTime (plug seconds context at duration)))))))
 
 (defn convolver
+  "Linear convolution."
   [generate-bit!]
   (fn [context at duration]
     (subgraph
@@ -213,6 +232,7 @@
         (-> .-buffer (set! (buffer generate-bit! context (+ duration 1.0))))))))
 
 (def reverb
+  "Crude reverb."
   (let [duration 5
         decay 3
         sample-rate 44100
