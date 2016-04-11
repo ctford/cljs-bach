@@ -200,12 +200,12 @@
         (-> .-pan (plug pan context at duration))))))
 
 (defn delay-line
-  [time]
+  [seconds]
   (fn [context at duration]
     (subgraph
       (let [maximum 5]
         (doto (.createDelay context maximum)
-          (-> .-delayTime (plug time context at duration)))))))
+          (-> .-delayTime (plug seconds context at duration)))))))
 
 (defn convolver
   [generate-bit!]

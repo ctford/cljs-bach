@@ -70,7 +70,7 @@ API
 ### Effects
 
 * `(stereo-panner pan)` - pan the signal left (-1) or right (1).
-* `(delay-line time)` - delay the signal by `time`.
+* `(delay-line seconds)` - delay the signal by `seconds`.
 * `reverb` - apply reverb to the signal.
 
 ### Combinators
