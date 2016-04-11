@@ -174,17 +174,15 @@
 ; Filters
 
 (defn biquad-filter
-  ([type freq q]
-   (fn [context at duration]
-     (subgraph
-       (doto (-> (biquad-filter type freq) (run-with context at duration) :output)
-         (-> .-Q (plug q context at duration))))))
   ([type freq]
+   (biquad-filter type freq 1.0))
+  ([type freq q]
    (fn [context at duration]
      (subgraph
        (doto (.createBiquadFilter context)
          (-> .-frequency .-value (set! 0))
          (-> .-frequency (plug freq context at duration))
+         (-> .-Q (plug q context at duration))
          (-> .-type (set! type)))))))
 
 (def low-pass (partial biquad-filter "lowpass"))
