@@ -97,8 +97,8 @@
 
 ; Combinators
 
-(defn fapply
-  "Apply a function within the (applicative) context of a synth."
+(defn update-graph
+  "Like update-in, but for the node graph a synth will return (and variadic)."
   [f & synths]
   (fn [context at duration]
     (->> synths
@@ -108,7 +108,7 @@
 (defn connect
   "Use the output of one synth as the input to another."
   [upstream-synth downstream-synth]
-  (fapply
+  (update-graph
     (fn [graph1 graph2]
       (.connect (:output graph1) (:input graph2))
       (subgraph (:input graph1) (:output graph2)))
@@ -120,18 +120,19 @@
   [& nodes]
   (reduce connect nodes))
 
+(defn join
+  "Join the graphs in parallel, with upstream and downstream as the source and sink."
+  [upstream downstream & graphs]
+  (doseq [graph graphs]
+    (.connect (:output graph) (:input downstream))
+    (when (:input graph)
+      (.connect (:output upstream) (:input graph))))
+  (subgraph (:input upstream) (:output downstream)))
+
 (defn add
   "Add together synths by connecting them all to the same upstream and downstream gains."
   [& synths]
-  (fn [context at duration]
-    (let [upstream (-> pass-through (run-with context at duration))
-          downstream (-> pass-through (run-with context at duration))]
-      (doseq [synth synths]
-        (let [graph (-> synth (run-with context at duration))]
-          (.connect (:output graph) (:input downstream))
-          (when (:input graph)
-            (.connect (:output upstream) (:input graph)))))
-      (subgraph (:input upstream) (:output downstream)))))
+    (apply update-graph join pass-through pass-through synths))
 
 
 ; Noise
