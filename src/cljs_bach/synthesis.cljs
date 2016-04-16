@@ -67,12 +67,10 @@
   (fn [context at duration]
     (let [audio-node (.createGain context)]
       (-> audio-node .-gain (.setValueAtTime 0 at))
-      (reduce
-        (fn [x [dx y]]
+      (loop [x at, coordinates corners]
+        (when-let [[[dx y] & remaining] coordinates]
           (-> audio-node .-gain (.linearRampToValueAtTime y (+ x dx)))
-          (+ dx x))
-        at
-        corners)
+          (recur (+ dx x) remaining)))
       (subgraph audio-node))))
 
 (defn adshr
