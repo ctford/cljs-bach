@@ -137,7 +137,7 @@
 
 ; Noise
 
-(defn buffer
+(defn raw-buffer
   [generate-bit! context duration]
   (let [sample-rate 44100
         frame-count (* sample-rate duration)
@@ -146,6 +146,8 @@
     (doseq [i (range sample-rate)]
       (aset data i (generate-bit! i)))
     buffer))
+
+(def buffer (memoize raw-buffer))
 
 (defn noise
   "Make noise according to the supplied strategy for creating bits."
