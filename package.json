@@ -1,0 +1,27 @@
+{
+  "name": "bach.js",
+  "version": "0.1.0",
+  "description": "A modular synthesis library.",
+  "main": "bach.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ctford/cljs-bach.git"
+  },
+  "keywords": [
+    "synthesis",
+    "web",
+    "audio"
+  ],
+  "author": "Chris Ford",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ctford/cljs-bach/issues"
+  },
+  "homepage": "https://github.com/ctford/cljs-bach#readme"
+}
