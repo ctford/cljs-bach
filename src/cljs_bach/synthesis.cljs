@@ -103,7 +103,7 @@
          (map #(run-with % context at duration))
          (apply f))))
 
-(defn connect
+(defn ^:export connect
   "Use the output of one synth as the input to another."
   [upstream-synth downstream-synth]
   (update-graph
@@ -113,7 +113,7 @@
     upstream-synth
     downstream-synth))
 
-(defn ^{:export "connect"} connect->
+(defn connect->
   "Connect synths in series."
   [& nodes]
   (reduce connect nodes))
