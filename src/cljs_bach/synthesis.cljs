@@ -1,6 +1,6 @@
 (ns cljs-bach.synthesis)
 
-(defn audio-context
+(defn ^:export audio-context
   "Construct an audio context in a way that works even if it's prefixed."
   []
   (if js/window.AudioContext. ; Some browsers e.g. Safari don't use the unprefixed version yet.

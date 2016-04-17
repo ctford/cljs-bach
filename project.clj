@@ -30,7 +30,7 @@
                         :source-paths ["src"]
                         :compiler {:main "cljs_bach.synthesis"
                                    :static-fns true
-                                   :optimizations :simple
+                                   :optimizations :advanced
                                    :pretty-print false
                                    :optimize-constants true
                                    :output-to "resources/public/js/compiled/bach.js"
