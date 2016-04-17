@@ -24,4 +24,14 @@
                                    :pretty-print true
                                    :output-to "resources/public/js/compiled/bach.js"
                                    :output-dir "resources/public/js/compiled"
+                                   :asset-path "js/compiled"}}
+
+                       {:id "prod"
+                        :source-paths ["src"]
+                        :compiler {:main "cljs_bach.synthesis"
+                                   :static-fns true
+                                   :optimizations :simple
+                                   :pretty-print false
+                                   :optimize-constants true
+                                   :output-to "resources/public/js/compiled/bach.js"
                                    :asset-path "js/compiled"}}]})
