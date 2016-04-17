@@ -1,7 +1,7 @@
 {
   "name": "bach.js",
-  "version": "0.1.0",
-  "description": "A modular synthesis library.",
+  "version": "0.0.0",
+  "description": "A modular synthesis library. Nothing works yet.",
   "main": "bach.js",
   "directories": {
     "test": "test"
