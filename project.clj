@@ -22,6 +22,6 @@
                         :compiler {:main "cljs_bach.synthesis"
                                    :optimizations :none
                                    :pretty-print true
-                                   :output-to "resources/public/js/compiled/app.js"
+                                   :output-to "resources/public/js/compiled/bach.js"
                                    :output-dir "resources/public/js/compiled"
                                    :asset-path "js/compiled"}}]})
