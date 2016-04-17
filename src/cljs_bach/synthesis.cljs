@@ -113,7 +113,7 @@
     upstream-synth
     downstream-synth))
 
-(defn ^:export connect->
+(defn ^{:export "connect"} connect->
   "Connect synths in series."
   [& nodes]
   (reduce connect nodes))
