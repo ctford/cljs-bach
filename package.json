@@ -2,7 +2,7 @@
   "name": "bach.js",
   "version": "0.0.0",
   "description": "A modular synthesis library. Nothing works yet.",
-  "main": "bach.js",
+  "main": "resources/public/js/compiled/bach.js",
   "directories": {
     "test": "test"
   },
