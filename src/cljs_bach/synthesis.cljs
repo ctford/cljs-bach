@@ -7,7 +7,7 @@
     (js/window.AudioContext.)
     (js/window.webkitAudioContext.)))
 
-(defn current-time
+(defn ^:export current-time
   "Return the current time as recorded by the audio context."
   [context]
   (.-currentTime context))
@@ -30,12 +30,12 @@
 
 ; Plumbing
 
-(defn run-with
+(defn ^:export run-with
   "Convert a synth (actually a reader fn) into a concrete subgraph by supplying context and timing."
   [synth context at duration]
   (synth context at duration))
 
-(defn destination
+(defn ^:export destination
   "The destination of the audio context i.e. the speakers."
   [context at duration]
   (sink (.-destination context)))
@@ -46,7 +46,7 @@
     (.setValueAtTime param input at)
     (-> input (run-with context at duration) :output (.connect param))))
 
-(defn gain
+(defn ^:export gain
   "Multiply the signal by level."
   [level]
   (fn [context at duration]
@@ -54,7 +54,7 @@
       (doto (.createGain context)
         (-> .-gain (plug level context at duration))))))
 
-(def pass-through
+(def ^:export pass-through
   "Pass the signal through unaltered."
   (gain 1.0))
 
@@ -78,7 +78,7 @@
   [attack decay sustain hold release]
   (envelope [attack 1.0] [decay sustain] [hold sustain] [release 0]))
 
-(defn adsr
+(defn ^:export adsr
   "A four-stage envelope."
   [attack decay sustain release]
   (fn [context at duration]
@@ -87,7 +87,7 @@
           node (adshr attack decay sustain hold release)]
       (-> node (run-with context at duration)))))
 
-(defn percussive
+(defn ^:export percussive
   "A simple envelope."
   [attack decay]
   (envelope [attack 1.0] [decay 0.0]))
@@ -113,7 +113,7 @@
     upstream-synth
     downstream-synth))
 
-(defn connect->
+(defn ^:export connect->
   "Connect synths in series."
   [& nodes]
   (reduce connect nodes))
@@ -127,7 +127,7 @@
       (.connect (:output upstream) (:input graph))))
   (subgraph (:input upstream) (:output downstream)))
 
-(defn add
+(defn ^:export add
   "Add together synths by connecting them all to the same upstream and downstream gains."
   [& synths]
     (apply update-graph join pass-through pass-through synths))
@@ -156,12 +156,12 @@
         (-> .-buffer (set! (buffer generate-bit! context (+ duration 1.0))))
         (.start at)))))
 
-(def white-noise
+(def ^:export white-noise
   "Random noise."
   (let [white (fn [_] (-> (js/Math.random) (* 2.0) (- 1.0)))]
     (noise white)))
 
-(defn constant
+(defn ^:export constant
   "Make a constant value by creating noise with a fixed value."
   [x]
   (noise (constantly x)))
@@ -180,10 +180,10 @@
         (.start at)
         (.stop (+ at duration 1.0)))))) ; Give a bit extra for the release
 
-(def sine (partial oscillator "sine"))
-(def sawtooth (partial oscillator "sawtooth"))
-(def square (partial oscillator "square"))
-(def triangle (partial oscillator "triangle"))
+(def ^:export sine (partial oscillator "sine"))
+(def ^:export sawtooth (partial oscillator "sawtooth"))
+(def ^:export square (partial oscillator "square"))
+(def ^:export triangle (partial oscillator "triangle"))
 
 
 ; Filters
@@ -201,13 +201,13 @@
          (-> .-Q (plug q context at duration))
          (-> .-type (set! type)))))))
 
-(def low-pass (partial biquad-filter "lowpass"))
-(def high-pass (partial biquad-filter "highpass"))
+(def ^:export low-pass (partial biquad-filter "lowpass"))
+(def ^:export high-pass (partial biquad-filter "highpass"))
 
 
 ; Effects
 
-(defn stereo-panner
+(defn ^:export stereo-panner
   "Pan the signal left (-1) or right (1)."
   [pan]
   (fn [context at duration]
@@ -215,7 +215,7 @@
       (doto (.createStereoPanner context)
         (-> .-pan (plug pan context at duration))))))
 
-(defn delay-line
+(defn ^:export delay-line
   "Delay the signal."
   [seconds]
   (fn [context at duration]
@@ -232,7 +232,7 @@
       (doto (.createConvolver context)
         (-> .-buffer (set! (buffer generate-bit! context (+ duration 1.0))))))))
 
-(def reverb
+(def ^:export reverb
   "Crude reverb."
   (let [duration 5
         decay 3
@@ -243,7 +243,7 @@
                                (Math/pow (- 1 (/ i length)) decay)))]
     (convolver logarithmic-decay)))
 
-(defn enhance
+(defn ^:export enhance
   "Mix the original signal with one with the effect applied."
   [effect level]
   (add pass-through (connect-> effect (gain level))))
