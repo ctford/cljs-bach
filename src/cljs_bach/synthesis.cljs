@@ -95,8 +95,8 @@
 
 ; Combinators
 
-(defn update-graph
-  "Like update-in, but for the node graph a synth will return (and variadic)."
+(defn apply-to-graph
+  "Like apply, but for the node graphs synths produce."
   [f & synths]
   (fn [context at duration]
     (->> synths
@@ -106,7 +106,7 @@
 (defn ^:export connect
   "Use the output of one synth as the input to another."
   [upstream-synth downstream-synth]
-  (update-graph
+  (apply-to-graph
     (fn [graph1 graph2]
       (.connect (:output graph1) (:input graph2))
       (subgraph (:input graph1) (:output graph2)))
@@ -130,7 +130,7 @@
 (defn ^:export add
   "Add together synths by connecting them all to the same upstream and downstream gains."
   [& synths]
-    (apply update-graph join pass-through pass-through synths))
+    (apply apply-to-graph join pass-through pass-through synths))
 
 
 ; Noise
