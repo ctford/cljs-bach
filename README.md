@@ -42,6 +42,11 @@ and a duration.
 
 If you forget to connect a synthesiser to `destination`, then you'll here no sound, because nothing will be sent to the speakers.
 
+Vanilla javascript usage
+------------------------
+
+See `resources/public/index.html`. To try it out, run `lein figwheel` and then navigate to `http://localhost:3449/`.
+
 API
 ---
 
