@@ -103,23 +103,22 @@
          (map #(run-with % context at duration))
          (apply f))))
 
+(defn join-in-series
+  [graph1 graph2]
+  (.connect (:output graph1) (:input graph2))
+  (subgraph (:input graph1) (:output graph2)))
+
 (defn ^:export connect
   "Use the output of one synth as the input to another."
   [upstream-synth downstream-synth]
-  (apply-to-graph
-    (fn [graph1 graph2]
-      (.connect (:output graph1) (:input graph2))
-      (subgraph (:input graph1) (:output graph2)))
-    upstream-synth
-    downstream-synth))
+  (apply-to-graph join-in-series upstream-synth downstream-synth))
 
 (defn connect->
   "Connect synths in series."
   [& nodes]
   (reduce connect nodes))
 
-(defn join
-  "Join the graphs in parallel, with upstream and downstream as the source and sink."
+(defn join-in-parallel
   [upstream downstream & graphs]
   (doseq [graph graphs]
     (.connect (:output graph) (:input downstream))
@@ -130,7 +129,7 @@
 (defn ^:export add
   "Add together synths by connecting them all to the same upstream and downstream gains."
   [& synths]
-    (apply apply-to-graph join pass-through pass-through synths))
+    (apply apply-to-graph join-in-parallel pass-through pass-through synths))
 
 
 ; Noise
