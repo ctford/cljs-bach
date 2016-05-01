@@ -8,11 +8,17 @@
 <script src="js/compiled/bach.js" type="text/javascript"></script>
 <script type="text/javascript">
 var context =cljs_bach.synthesis.audio_context();
-var simple = cljs_bach.synthesis.connect(cljs_bach.synthesis.triangle(440),
-                                         cljs_bach.synthesis.adsr(0.01, 0.2, 0.5, 0.1));
-var hat = cljs_bach.synthesis.connect(cljs_bach.synthesis.white_noise,
-                                      cljs_bach.synthesis.percussive(0.01, 0.4));
 var audio_out = cljs_bach.synthesis.destination;
+
+function simple(frequency) {
+  return cljs_bach.synthesis.connect(
+           cljs_bach.synthesis.triangle(frequency),
+           cljs_bach.synthesis.adsr(0.01, 0.2, 0.5, 0.1));
+}
+
+var hat = cljs_bach.synthesis.connect(
+            cljs_bach.synthesis.white_noise,
+            cljs_bach.synthesis.percussive(0.01, 0.4));
 
 function play(synth) {
   var now = cljs_bach.synthesis.current_time(context);
@@ -20,7 +26,8 @@ function play(synth) {
   cljs_bach.synthesis.run_with(plugged, context, now, 1.0);
 }
 </script>
-<button onclick="play(simple)">Ping!</button>
+<button onclick="play(simple(440))">Ping!</button>
+<button onclick="play(simple(330))">Pong!</button>
 <button onclick="play(hat)">Tshhhh!</button>
 </body>
 </html>
