@@ -3,8 +3,8 @@
 (defn ^:export audio-context
   "Construct an audio context in a way that works even if it's prefixed."
   []
-  (if js/window.AudioContext. ; Some browsers e.g. Safari don't use the unprefixed version yet.
-    (js/window.AudioContext.)
+  (if js/window.AudioContext. ; Some browsers e.g. Safari don't use the
+    (js/window.AudioContext.) ; unprefixed version yet.
     (js/window.webkitAudioContext.)))
 
 (defn ^:export current-time
@@ -19,19 +19,22 @@
   ([singleton] (subgraph singleton singleton)))
 
 (defn source
-  "A graph of synthesis nodes without an input, so another graph can't connect to it."
+  "A graph of synthesis nodes without an input,
+  so another graph can't connect to it."
   [node]
   (subgraph nil node))
 
 (defn sink
-  "A graph of synthesis nodes without an output, so it can't connect to another graph."
+  "A graph of synthesis nodes without an output,
+  so it can't connect to another graph."
   [node]
   (subgraph node nil))
 
 ; Plumbing
 
 (defn ^:export run-with
-  "Convert a synth (actually a reader fn) into a concrete subgraph by supplying context and timing."
+  "Convert a synth (actually a reader fn) into a concrete
+  subgraph by supplying context and timing."
   [synth context at duration]
   (synth context at duration))
 
@@ -41,7 +44,8 @@
   (sink (.-destination context)))
 
 (defn plug [param input context at duration]
-  "Plug an input into an audio parameter, accepting both numbers and synths."
+  "Plug an input into an audio parameter, accepting both
+  numbers and synths."
   (if (number? input)
     (.setValueAtTime param input at)
     (-> input (run-with context at duration) :output (.connect param))))
@@ -127,9 +131,13 @@
   (subgraph (:input upstream) (:output downstream)))
 
 (defn ^:export add
-  "Add together synths by connecting them all to the same upstream and downstream gains."
+  "Add together synths by connecting them all to the same
+  upstream and downstream gains."
   [& synths]
-    (apply apply-to-graph join-in-parallel pass-through pass-through synths))
+    (apply
+      apply-to-graph
+      join-in-parallel
+      pass-through pass-through synths))
 
 
 ; Noise
@@ -188,7 +196,8 @@
 ; Filters
 
 (defn biquad-filter
-  "Attenuate frequencies beyond the cutoff, and intensify the cutoff frequency based on the value of q."
+  "Attenuate frequencies beyond the cutoff, and intensify
+  the cutoff frequency based on the value of q."
   ([type freq]
    (biquad-filter type freq 1.0))
   ([type freq q]

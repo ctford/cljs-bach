@@ -25,9 +25,38 @@ function play(synth) {
   var plugged = cljs_bach.synthesis.connect(synth, audio_out);
   cljs_bach.synthesis.run_with(plugged, context, now, 1.0);
 }
+
+var context = new AudioContext();
+
+function process(data) {
+  var source = context.createBufferSource();
+  context.decodeAudioData(data, function(buffer) {
+      source.buffer = buffer;
+      source.connect(context.destination);
+      source.start(context.currentTime);
+    });
+}
+
+function play_sample(id) {
+  var uri = "http://freesound.org/apiv2/sounds/" + id + "/?fields=previews&token=8bad9e58003b4cebf76c87776a085019bd89cfd5";
+  var request = new XMLHttpRequest();
+  request.open("GET", uri);
+  request.onload = function() {
+      var result = JSON.parse(request.responseText);
+      var request2 = new XMLHttpRequest();
+      request2.open("GET", result.previews["preview-lq-mp3"]);
+      request2.responseType = "arraybuffer";
+      request2.onload = function() {
+          process(request2.response);
+      };
+      request2.send();
+  };
+  request.send();
+}
 </script>
 <button onclick="play(simple(440))">Ping!</button>
 <button onclick="play(simple(330))">Pong!</button>
 <button onclick="play(hat)">Tshhhh!</button>
+<button onclick="play_sample(345312)">Open doors</button>
 </body>
 </html>
