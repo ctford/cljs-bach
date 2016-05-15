@@ -1,4 +1,7 @@
-(ns cljs-bach.synthesis)
+(ns cljs-bach.synthesis
+  (:require
+    [ajax.core :as ajax]
+    [ajax.protocols :as protocol]))
 
 (defn ^:export audio-context
   "Construct an audio context in a way that works even if it's prefixed."
@@ -255,3 +258,26 @@
   "Mix the original signal with one with the effect applied."
   [effect level]
   (add pass-through (connect-> effect (gain level))))
+
+(defn ^:export sample
+  "Play a sample addressed via a URI.
+
+  Currently, asynchrony is dealt with by playing silence until we've decoded everything."
+  [uri]
+  (let [psuedo-promise (js-obj)]
+    (ajax/GET uri {:api (js/XMLHttpRequest.) ; We need to do this, as the default API ignores :type.
+                   :response-format {:type :arraybuffer
+                                     :read protocol/-body
+                                     :description "audio"
+                                     :content-type "audio/mpeg"}
+                   :handler #(set! (.-value psuedo-promise) %)})
+    (fn [context at duration]
+      (source
+        (if-let [buffer (.-buffer psuedo-promise)]
+          (doto (.createBufferSource context)
+            (-> .-buffer (set! buffer))
+            (.start at))
+          (do
+            (when-let [value (.-value psuedo-promise)]
+              (.decodeAudioData context value #(set! (.-buffer psuedo-promise) %)))
+            (.createGain context)))))))

@@ -2,7 +2,8 @@
   :description "A Clojurescript wrapper for the Web Audio API."
   :license {:name "MIT" }
   :dependencies [[org.clojure/clojure "1.7.0"]
-                 [org.clojure/clojurescript "1.7.228"]]
+                 [org.clojure/clojurescript "1.7.228"]
+                 [cljs-ajax "0.5.3"]]
 
   :min-lein-version "2.5.0"
 
