@@ -259,7 +259,7 @@
   [effect level]
   (add pass-through (connect-> effect (gain level))))
 
-(defn ^:export sample
+(defn raw-sample
   "Play a sample addressed via a URI.
 
   Currently, asynchrony is dealt with by playing silence until we've decoded everything."
@@ -281,3 +281,5 @@
             (when-let [value (.-value psuedo-promise)]
               (.decodeAudioData context value #(set! (.-buffer psuedo-promise) %)))
             (.createGain context)))))))
+
+(def ^:export sample (memoize raw-sample))

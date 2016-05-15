@@ -56,13 +56,11 @@ function sample2() {
   return cljs_bach.synthesis.sample("http://www.freesound.org/data/previews/345/345312_2291325-lq.mp3");
 }
 
-var sampler = sample2();
-
 </script>
 <button onclick="play(simple(440))">Ping!</button>
 <button onclick="play(simple(330))">Pong!</button>
 <button onclick="play(hat)">Tshhhh!</button>
 <button onclick="sample(345312)">Open doors</button>
-<button onclick="play(sampler)">Close doors</button>
+<button onclick="play(sample2())">Close doors</button>
 </body>
 </html>
