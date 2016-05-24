@@ -265,8 +265,7 @@
   Currently, asynchrony is dealt with by playing silence until we've decoded everything."
   [uri]
   (let [psuedo-promise (js-obj)]
-    (ajax/GET uri {:api (js/XMLHttpRequest.) ; We need to do this, as the default API ignores :type.
-                   :response-format {:type :arraybuffer
+    (ajax/GET uri {:response-format {:type :arraybuffer
                                      :read protocol/-body
                                      :description "audio"
                                      :content-type "audio/mpeg"}
