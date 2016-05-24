@@ -264,21 +264,20 @@
 
   Currently, asynchrony is dealt with by playing silence until we've decoded everything."
   [uri]
-  (let [psuedo-promise (js-obj)]
+  (let [psuedo-promise (js-obj)
+        extra-context (audio-context) ; This is bad - it's going to waste audio contexts.
+        decode (fn [value] (.decodeAudioData extra-context value #(set! (.-buffer psuedo-promise) %)))]
     (ajax/GET uri {:response-format {:type :arraybuffer
                                      :read protocol/-body
                                      :description "audio"
                                      :content-type "audio/mpeg"}
-                   :handler #(set! (.-value psuedo-promise) %)})
+                   :handler decode})
     (fn [context at duration]
       (source
         (if-let [buffer (.-buffer psuedo-promise)]
           (doto (.createBufferSource context)
             (-> .-buffer (set! buffer))
             (.start at))
-          (do
-            (when-let [value (.-value psuedo-promise)]
-              (.decodeAudioData context value #(set! (.-buffer psuedo-promise) %)))
-            (.createGain context)))))))
+          (.createGain context))))))
 
 (def ^:export sample (memoize raw-sample))
