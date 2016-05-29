@@ -23,7 +23,7 @@ var hat = cljs_bach.synthesis.connect(
 function play(synth) {
   var now = cljs_bach.synthesis.current_time(context);
   var plugged = cljs_bach.synthesis.connect(synth, audio_out);
-  cljs_bach.synthesis.run_with(plugged, context, now, 1.0);
+  cljs_bach.synthesis.run_with(plugged, context, now, 3.0);
 }
 
 function process(data) {
@@ -51,8 +51,8 @@ function sample(id) {
   };
   var result = request.send();
 }
-
 var sample2 = cljs_bach.synthesis.sample("http://www.freesound.org/data/previews/345/345312_2291325-lq.mp3");
+
 
 </script>
 <button onclick="play(simple(440))">Ping!</button>

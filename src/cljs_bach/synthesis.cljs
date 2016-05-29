@@ -270,20 +270,19 @@
   "Play a sample addressed via a URI. Until fetching and decoding is complete, it will play silence."
   [uri]
   (let [psuedo-promise (js-obj)] ; A mutable object to close over and share between calls.
-    (get-mp3 uri #(set! (.-data psuedo-promise) %)) ; Deliver the data by updating the mutable object.
+    (get-mp3 uri #(set! (.-data psuedo-promise) %)) ; GET, then deliver the data by updating the mutable object.
     (fn [context at duration]
       (source
-        (let [node (.createGain context)
-              play-buffer (fn [buffer]
+        (let [node (doto (.createBufferSource context)
+                     (.start at)
+                     (.stop (+ at duration)))
+              set-buffer (fn [buffer]
                             (set! (.-buffer psuedo-promise) buffer) ; Save it for later.
-                            (doto (.createBufferSource context)
-                              (-> .-buffer (set! buffer))
-                              (.start at)
-                              (.connect node)))]
+                            (-> node .-buffer (set! buffer)))] ; Set it on the audio node.
           (when-let [data (.-data psuedo-promise)] ; Has the ajax call returned?
             (if-let [buffer (.-buffer psuedo-promise)] ; Has the buffer been decoded?
-              (play-buffer buffer) ; Already decoded, so play it.
-              (.decodeAudioData context data play-buffer))) ; Decode it and then play it.
+              (set-buffer buffer) ; Already decoded, so set it.
+              (.decodeAudioData context data set-buffer))) ; Decode it and then set it.
           node)))))
 
 (def ^:export sample (memoize raw-sample))
