@@ -272,17 +272,19 @@
                    :handler #(set! (.-data psuedo-promise) %)})
     (fn [context at duration]
       (source
-        (let [node (.createGain context)]
-          (when-let [data (.-data psuedo-promise)]
-            (let [buffer (.-buffer psuedo-promise)
-                  add-buffer #(doto (.createBufferSource context)
-                                (-> .-buffer (set! (.-buffer psuedo-promise)))
-                                (.start at)
-                                (.connect node))]
-              (if buffer
-                (add-buffer)
-                (.decodeAudioData context data #(do (set! (.-buffer psuedo-promise) %)
-                                                    (add-buffer))))))
+        (let [node (.createGain context)
+              play-buffer (fn [buffer]
+                            (doto (.createBufferSource context)
+                              (-> .-buffer (set! buffer))
+                              (.start at)
+                              (.connect node)))
+              set-and-play-buffer (fn [buffer]
+                                    (set! (.-buffer psuedo-promise) buffer)
+                                    (play-buffer buffer))]
+          (when-let [data (.-data psuedo-promise)] ; Has the ajax call returned?
+            (if-let [buffer (.-buffer psuedo-promise)] ; Has the buffer been decoded?
+              (play-buffer buffer)
+              (.decodeAudioData context data set-and-play-buffer)))
           node)))))
 
 (def ^:export sample (memoize raw-sample))
