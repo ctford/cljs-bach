@@ -260,31 +260,27 @@
   (add pass-through (connect-> effect (gain level))))
 
 (defn raw-sample
-  "Play a sample addressed via a URI.
-
-  Currently, asynchrony is dealt with by playing silence until we've decoded everything."
+  "Play a sample addressed via a URI. Until fetching and decoding is complete, it will play silence."
   [uri]
-  (let [psuedo-promise (js-obj)]
+  (let [psuedo-promise (js-obj)] ; A mutable object to close over and share between calls.
     (ajax/GET uri {:response-format {:type :arraybuffer
                                      :read protocol/-body
                                      :description "audio"
                                      :content-type "audio/mpeg"}
-                   :handler #(set! (.-data psuedo-promise) %)})
+                   :handler #(set! (.-data psuedo-promise) %)}) ; Deliver the data by updating the mutable object.
     (fn [context at duration]
       (source
         (let [node (.createGain context)
               play-buffer (fn [buffer]
+                            (set! (.-buffer psuedo-promise) buffer) ; Save it for later.
                             (doto (.createBufferSource context)
                               (-> .-buffer (set! buffer))
                               (.start at)
-                              (.connect node)))
-              set-and-play-buffer (fn [buffer]
-                                    (set! (.-buffer psuedo-promise) buffer)
-                                    (play-buffer buffer))]
+                              (.connect node)))]
           (when-let [data (.-data psuedo-promise)] ; Has the ajax call returned?
             (if-let [buffer (.-buffer psuedo-promise)] ; Has the buffer been decoded?
-              (play-buffer buffer)
-              (.decodeAudioData context data set-and-play-buffer)))
+              (play-buffer buffer) ; Already decoded, so play it.
+              (.decodeAudioData context data play-buffer))) ; Decode it and then play it.
           node)))))
 
 (def ^:export sample (memoize raw-sample))
