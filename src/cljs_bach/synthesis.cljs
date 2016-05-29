@@ -264,7 +264,7 @@
                                    :read protocol/-body
                                    :description "audio"
                                    :content-type "audio/mpeg"}
-                 :handler callback }))
+                 :handler callback}))
 
 (defn raw-sample
   "Play a sample addressed via a URI. Until fetching and decoding is complete, it will play silence."
