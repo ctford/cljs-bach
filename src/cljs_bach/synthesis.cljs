@@ -259,15 +259,18 @@
   [effect level]
   (add pass-through (connect-> effect (gain level))))
 
+(defn get-mp3 [uri callback]
+  (ajax/GET uri {:response-format {:type :arraybuffer
+                                   :read protocol/-body
+                                   :description "audio"
+                                   :content-type "audio/mpeg"}
+                 :handler callback }))
+
 (defn raw-sample
   "Play a sample addressed via a URI. Until fetching and decoding is complete, it will play silence."
   [uri]
   (let [psuedo-promise (js-obj)] ; A mutable object to close over and share between calls.
-    (ajax/GET uri {:response-format {:type :arraybuffer
-                                     :read protocol/-body
-                                     :description "audio"
-                                     :content-type "audio/mpeg"}
-                   :handler #(set! (.-data psuedo-promise) %)}) ; Deliver the data by updating the mutable object.
+    (get-mp3 uri #(set! (.-data psuedo-promise) %)) ; Deliver the data by updating the mutable object.
     (fn [context at duration]
       (source
         (let [node (.createGain context)
