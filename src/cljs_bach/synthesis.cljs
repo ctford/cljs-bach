@@ -151,7 +151,7 @@
         frame-count (* sample-rate duration)
         buffer (.createBuffer context 1 frame-count sample-rate)
         data (.getChannelData buffer 0)]
-    (doseq [i (range sample-rate)]
+    (doseq [i (range frame-count)]
       (aset data i (generate-bit! i)))
     buffer))
 
