@@ -89,7 +89,7 @@
   "A four-stage envelope."
   [attack decay sustain release]
   (fn [context at duration]
-    (let [remainder (- duration attack decay sustain)
+    (let [remainder (- duration attack decay release)
           hold (max 0.0 remainder)
           node (adshr attack decay sustain hold release)]
       (-> node (run-with context at duration)))))
