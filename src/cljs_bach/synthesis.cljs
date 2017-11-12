@@ -228,7 +228,7 @@
 (defn jack [input]
   "Wrap an input so that it can be used as a source node."
   (fn [context at duration]
-    (subgraph input)))
+    (source input)))
 
 (defn ^:export constant
   "A constant signal."
