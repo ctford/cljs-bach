@@ -2,7 +2,6 @@ CLJS Bach
 =========
 
 A Clojurescript wrapper for the Web Audio API, extracted from [Klangmeister](http://ctford.github.io/klangmeister/).
-Vanilla javascript support is coming soon.
 
 [![Build Status](https://travis-ci.org/ctford/cljs-bach.png)](https://travis-ci.org/ctford/cljs-bach)
 
