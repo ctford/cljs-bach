@@ -35,30 +35,12 @@ function process(data) {
     });
 }
 
-function sample(id) {
-  var uri = "http://freesound.org/apiv2/sounds/" + id + "/?fields=previews&token=8bad9e58003b4cebf76c87776a085019bd89cfd5";
-  var request = new XMLHttpRequest();
-  request.open("GET", uri);
-  request.onload = function() {
-      var result = JSON.parse(request.responseText);
-      var request2 = new XMLHttpRequest();
-      request2.open("GET", result.previews["preview-lq-mp3"]);
-      request2.responseType = "arraybuffer";
-      request2.onload = function() {
-          process(request2.response);
-      };
-      request2.send();
-  };
-  var result = request.send();
-}
-var sample2 = cljs_bach.synthesis.sample("http://www.freesound.org/data/previews/345/345312_2291325-lq.mp3");
-
+var sample = cljs_bach.synthesis.sample("http://freesound.org/data/previews/345/345312_2291325-lq.mp3");
 
 </script>
 <button onclick="play(simple(440))">Ping!</button>
 <button onclick="play(simple(330))">Pong!</button>
 <button onclick="play(hat)">Tshhhh!</button>
-<button onclick="sample(345312)">Open doors</button>
-<button onclick="play(sample2)">Close doors</button>
+<button onclick="play(sample)">Door sample</button>
 </body>
 </html>
