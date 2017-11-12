@@ -171,11 +171,6 @@
   (let [white (fn [_] (-> (js/Math.random) (* 2.0) (- 1.0)))]
     (noise white)))
 
-(defn ^:export constant
-  "Make a constant value by creating noise with a fixed value."
-  [x]
-  (noise (constantly x)))
-
 ; Oscillators
 
 (defn oscillator
@@ -234,6 +229,12 @@
   "Wrap an input so that it can be used as a source node."
   (fn [context at duration]
     (subgraph input)))
+
+(defn ^:export constant
+  "A constant signal."
+  [x]
+  (fn [context at duration]
+    (source (make-input! context x))))
 
 ; Filters
 
