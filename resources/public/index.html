@@ -20,10 +20,10 @@ var hat = cljs_bach.synthesis.connect(
             cljs_bach.synthesis.white_noise,
             cljs_bach.synthesis.percussive(0.01, 0.4));
 
-function play(synth) {
+function play(synth, duration) {
   var now = cljs_bach.synthesis.current_time(context);
   var plugged = cljs_bach.synthesis.connect(synth, audio_out);
-  cljs_bach.synthesis.run_with(plugged, context, now, 3.0);
+  cljs_bach.synthesis.run_with(plugged, context, now, duration);
 }
 
 function process(data) {
@@ -38,9 +38,9 @@ function process(data) {
 var sample = cljs_bach.synthesis.sample("http://freesound.org/data/previews/345/345312_2291325-lq.mp3");
 
 </script>
-<button onclick="play(simple(440))">Ping!</button>
-<button onclick="play(simple(330))">Pong!</button>
-<button onclick="play(hat)">Tshhhh!</button>
-<button onclick="play(sample)">Door sample</button>
+<button onclick="play(simple(440), 1.5)">Ping!</button>
+<button onclick="play(simple(330), 1.0)">Pong!</button>
+<button onclick="play(hat, 0.5)">Tshhhh!</button>
+<button onclick="play(sample, 1.5)">Door sample</button>
 </body>
 </html>
