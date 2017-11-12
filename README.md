@@ -83,6 +83,10 @@ API
 * `(connect-> node1 node2)` - connect `node1`'s output to `node2`'s input.
 * `(add node1 node2)` - add together the outputs of `node1` and `node2`.
 
+### Samples
+
+* `(sample uri)` - load a sample from a URI. The asynchronicity can make this a little glitchy.
+
 Getting a REPL
 --------------
 
