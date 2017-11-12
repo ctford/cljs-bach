@@ -225,10 +225,9 @@
   (let [end-time (ramp-end-time input target vel)]
     (-> input .-offset (.exponentialRampToValueAtTime target end-time))))
 
-(defn jack [input]
-  "Wrap an input so that it can be used as a source node."
-  (fn [context at duration]
-    (source input)))
+(defn ^:export jack [node]
+  "Wrap a node so that it can be used as a source."
+  (constantly (source node)))
 
 (defn ^:export constant
   "A constant signal."
