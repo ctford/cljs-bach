@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3.0
+-----
+
+* Fixed ADSR duration (thanks @esp1!).
+* Fixed raw buffer range (thanks @0x2493).
+
 0.2.0
 -----
 
