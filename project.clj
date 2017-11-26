@@ -1,4 +1,4 @@
-(defproject cljs-bach "0.3.0"
+(defproject cljs-bach "0.4.0-SNAPSHOT"
   :description "A Clojurescript wrapper for the Web Audio API."
   :license {:name "MIT" }
   :dependencies [[org.clojure/clojure "1.7.0"]
