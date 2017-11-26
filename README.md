@@ -85,7 +85,7 @@ API
 
 ### Samples
 
-* `(sample uri)` - load a sample from a URI. The asynchronicity can make this a little glitchy.
+* `(sample uri)` - load a sample from a URI, which can then be used as a source node in the same way that oscillators can. The asynchronicity can make this a little glitchy.
 
 Getting a REPL
 --------------
